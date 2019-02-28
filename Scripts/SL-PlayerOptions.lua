@@ -303,8 +303,12 @@ local Overrides = {
 		end
 	},
 	-------------------------------------------------------------------------
-	MeasureCounterPosition = {
+	MeasureCounterPositionX = {
 		Values = function() return { "Left", "Center" } end,
+	},
+	-------------------------------------------------------------------------
+	MeasureCounterPositionY = {
+		Values = function() return { "Below", "Above" } end,
 	},
 	-------------------------------------------------------------------------
 	MeasureCounter = {

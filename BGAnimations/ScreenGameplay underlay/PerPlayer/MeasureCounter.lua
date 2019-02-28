@@ -74,16 +74,18 @@ if mods.MeasureCounter and mods.MeasureCounter ~= "None" then
 		Font="_wendy small",
 		InitCommand=function(self)
 			MeasureCounterBMT = self
-
+			local width = GAMESTATE:GetCurrentStyle(player):GetWidth(player)
+			local NumColumns = GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()
 			self:zoom(0.35):shadowlength(1):horizalign(center)
 
-			if mods.MeasureCounterPosition == "Center" then
+			if mods.MeasureCounterPositionX == "Center" and mods.MeasureCounterPositionY == "Below" then
 				self:xy( GetNotefieldX(player), _screen.cy )
+			elseif mods.MeasureCounterPositionX == "Center" and mods.MeasureCounterPositionY == "Above" then
+				self:xy( GetNotefieldX(player), _screen.cy - _screen.cy/4 )
+			elseif mods.MeasureCounterPositionX == "Left" and mods.MeasureCounterPositionY == "Below" then
+				self:xy( GetNotefieldX(player) - (width/NumColumns), _screen.cy)
 			else
-				local width = GAMESTATE:GetCurrentStyle(player):GetWidth(player)
-				local NumColumns = GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()
-
-				self:xy( GetNotefieldX(player) - (width/NumColumns), _screen.cy )
+				self:xy( GetNotefieldX(player) - (width/NumColumns), _screen.cy - _screen.cy/4 )
 			end
 		end
 	}
