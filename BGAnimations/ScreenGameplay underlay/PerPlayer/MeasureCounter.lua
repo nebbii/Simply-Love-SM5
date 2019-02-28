@@ -37,11 +37,23 @@ local function Update(self, delta)
 		if streams.Measures[stream_index]
 		and current_measure >= streams.Measures[stream_index].streamStart
 		and current_measure <= streams.Measures[stream_index].streamEnd then
-
+			local defaultMText
+			local subtractMText
 			current_stream_length = streams.Measures[stream_index].streamEnd - streams.Measures[stream_index].streamStart
 			current_count = math.floor(current_measure - streams.Measures[stream_index].streamStart) + 1
 
-			text = tostring(current_count .. "/" .. current_stream_length)
+			-- checks MeasureCounterStyle and set next measuretext
+			if mods.MeasureCounterStyle == "Default" then
+				stream_left = tostring(current_count .. "/" .. current_stream_length)
+			elseif mods.MeasureCounterStyle == "Subtraction" then
+				stream_left = current_stream_length - current_count + 1
+			elseif mods.MeasureCounterStyle == "Both" then
+				defaultMText = tostring("  (" .. current_count .. "/" .. current_stream_length .. ")")
+				subtractMText = tostring(current_stream_length - current_count + 1)
+				stream_left = subtractMText .. defaultMText
+			end
+
+			text = tostring(stream_left)
 			MeasureCounterBMT:settext( text )
 
 			if current_count > current_stream_length then

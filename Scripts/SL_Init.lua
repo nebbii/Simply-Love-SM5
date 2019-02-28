@@ -20,6 +20,7 @@ local PlayerDefaults = {
 				SubtractiveScoring = false,
 				MeasureCounterPositionX = "Left",
 				MeasureCounterPositionY = "Below",
+				MeasureCounterStyle = "Traditional",
 				MeasureCounter = "None",
 				TargetStatus="Disabled",
 				TargetBar=11,

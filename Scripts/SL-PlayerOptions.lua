@@ -315,6 +315,10 @@ local Overrides = {
 		Values = function() return { "None", "8th", "12th", "16th", "24th", "32nd" } end,
 	},
 	-------------------------------------------------------------------------
+	MeasureCounterStyle = {
+		Choices = function() return { "Traditional", "Subtraction", "Both" } end,
+	},
+	-------------------------------------------------------------------------
 	DecentsWayOffs = {
 		Values = function() return { "On", "Decents Only", "Off" } end,
 		OneChoiceForAllPlayers = true,
