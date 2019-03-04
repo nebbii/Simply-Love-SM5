@@ -26,7 +26,8 @@ return Def.BitmapText{
 		end
 
 		if SL[ToEnumShortString(player)].ActiveModifiers.DensityGraph ~= "Disabled" then
-			self:visible(false)
+			self:xy(_screen.cx + _screen.w/2.625, _screen.cy/10)
+			self:zoom(0.4)
 		end
 	end,
 	JudgmentMessageCommand=function(self) self:queuecommand("RedrawScore") end,
