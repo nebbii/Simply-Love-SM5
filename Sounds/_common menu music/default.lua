@@ -5,6 +5,7 @@ local songs = {
 	Hearts = "feel (loop).ogg",
 	Ducks = "Xuxa fami VRC6 (loop).ogg",
 	Gay = "Mystical Wheelbarrow Journey (loop).ogg",
+	Borderline = "Borderline (loop).ogg"
 }
 
 local audio_file =  songs[ ThemePrefs.Get("VisualTheme") ]

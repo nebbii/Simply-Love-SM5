@@ -4,17 +4,28 @@ if game ~= "dance" and game ~= "pump" then
 	game = "techno"
 end
 
+
+
 local t = Def.ActorFrame{
 	InitCommand=function(self)
 		self:y( image == "Hearts" and _screen.cy or _screen.cy+10 )		
 	end,
-		
-	LoadActor(THEME:GetPathG("", "_logos/" .. game))..{
-		InitCommand=function(self)
-			self:xy(_screen.cx, -16):zoom( game=="pump" and 0.2 or 0.205 ):cropright(1)
-		end,
-		OnCommand=function(self)
-			self:linear(0.33):cropright(0)
+		if image == "Borderline" then 
+		LoadActor(THEME:GetPathG("", "_logos/" .. "borderline"))..{
+			InitCommand=function(self)
+				self:xy(_screen.cx, -16):zoom( game=="pump" and 0.2 or 0.205 ):cropright(1)
+			end,
+			OnCommand=function(self)
+				self:linear(0.33):cropright(0)
+			end
+	else 
+		LoadActor(THEME:GetPathG("", "_logos/" .. game))..{
+			InitCommand=function(self)
+				self:xy(_screen.cx, -16):zoom( game=="pump" and 0.2 or 0.205 ):cropright(1)
+			end,
+			OnCommand=function(self)
+				self:linear(0.33):cropright(0)
+			end
 		end
 	},
 
