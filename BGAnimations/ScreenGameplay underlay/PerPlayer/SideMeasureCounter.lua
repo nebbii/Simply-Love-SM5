@@ -79,7 +79,7 @@ local function Update(self, delta)
 			current_count = math.floor(current_measure - streams.Measures[stream_index].streamStart) + 1
 
 			-- checks MeasureCounterStyle and set next measuretext
-			if mods.MeasureCounterStyle == "Default" then
+			if mods.MeasureCounterStyle == "Traditional" then
 				stream_left = tostring(current_count .. "/" .. current_stream_length)
 			elseif mods.MeasureCounterStyle == "Subtraction" then
 				stream_left = current_stream_length - current_count + 1
