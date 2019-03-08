@@ -43,7 +43,7 @@ local function Update(self, delta)
 			current_count = math.floor(current_measure - streams.Measures[stream_index].streamStart) + 1
 
 			-- checks MeasureCounterStyle and set next measuretext
-			if mods.MeasureCounterStyle == "Default" then
+			if mods.MeasureCounterStyle == "Traditional" then
 				stream_left = tostring(current_count .. "/" .. current_stream_length)
 			elseif mods.MeasureCounterStyle == "Subtraction" then
 				stream_left = current_stream_length - current_count + 1
@@ -91,9 +91,9 @@ if mods.MeasureCounter and mods.MeasureCounter ~= "None" then
 			
 			-- Set the size of the measure counter according to the size mod
 			if mods.MeasureCounterSize == "Big" then
-				self:zoom(0.40):shadowlength(1):horizalign(center)
+				self:zoom(0.5):shadowlength(1):horizalign(center)
 			elseif mods.MeasureCounterSize == "Humongous" then
-				self:zoom(0.50):shadowlength(1):horizalign(center)
+				self:zoom(0.75):shadowlength(1):horizalign(center)
 			else
 				self:zoom(0.35):shadowlength(1):horizalign(center)
 			end
