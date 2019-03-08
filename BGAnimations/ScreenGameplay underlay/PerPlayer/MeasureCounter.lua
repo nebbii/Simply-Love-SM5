@@ -88,8 +88,17 @@ if mods.MeasureCounter and mods.MeasureCounter ~= "None" then
 			MeasureCounterBMT = self
 			local width = GAMESTATE:GetCurrentStyle(player):GetWidth(player)
 			local NumColumns = GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()
-			self:zoom(0.35):shadowlength(1):horizalign(center)
+			
+			-- Set the size of the measure counter according to the size mod
+			if mods.MeasureCounterSize == "Big" then
+				self:zoom(0.40):shadowlength(1):horizalign(center)
+			elseif mods.MeasureCounterSize == "Humongous" then
+				self:zoom(0.50):shadowlength(1):horizalign(center)
+			else
+				self:zoom(0.35):shadowlength(1):horizalign(center)
+			end
 
+			-- Set the position for the measurecounter according to the selected X and Y axis mods
 			if mods.MeasureCounterPositionX == "Center" and mods.MeasureCounterPositionY == "Below" then
 				self:xy( GetNotefieldX(player), _screen.cy )
 			elseif mods.MeasureCounterPositionX == "Center" and mods.MeasureCounterPositionY == "Above" then

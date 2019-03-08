@@ -319,6 +319,10 @@ local Overrides = {
 		Choices = function() return { "Traditional", "Subtraction", "Both" } end,
 	},
 	-------------------------------------------------------------------------
+	MeasureCounterSize = {
+		Choices = function() return { "Traditional", "Big", "Humongous" } end,
+	},
+	-------------------------------------------------------------------------
 	DecentsWayOffs = {
 		Values = function() return { "On", "Decents Only", "Off" } end,
 		OneChoiceForAllPlayers = true,
