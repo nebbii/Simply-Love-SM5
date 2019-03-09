@@ -48,8 +48,8 @@ local function Update(self, delta)
 			elseif mods.MeasureCounterStyle == "Subtraction" then
 				stream_left = current_stream_length - current_count + 1
 			elseif mods.MeasureCounterStyle == "Both" then
-				defaultMText = tostring("  (" .. current_count .. "/" .. current_stream_length .. ")")
 				subtractMText = tostring(current_stream_length - current_count + 1)
+				defaultMText = tostring("/" .. current_stream_length)
 				stream_left = subtractMText .. defaultMText
 			end
 
