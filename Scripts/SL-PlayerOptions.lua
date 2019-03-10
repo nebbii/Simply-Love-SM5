@@ -303,12 +303,24 @@ local Overrides = {
 		end
 	},
 	-------------------------------------------------------------------------
-	MeasureCounterPosition = {
+	MeasureCounterPositionX = {
 		Values = function() return { "Left", "Center" } end,
+	},
+	-------------------------------------------------------------------------
+	MeasureCounterPositionY = {
+		Values = function() return { "Below", "Above" } end,
 	},
 	-------------------------------------------------------------------------
 	MeasureCounter = {
 		Values = function() return { "None", "8th", "12th", "16th", "24th", "32nd" } end,
+	},
+	-------------------------------------------------------------------------
+	MeasureCounterStyle = {
+		Choices = function() return { "Traditional", "Subtraction", "Both" } end,
+	},
+	-------------------------------------------------------------------------
+	MeasureCounterSize = {
+		Choices = function() return { "Traditional", "Big", "Humongous" } end,
 	},
 	-------------------------------------------------------------------------
 	DecentsWayOffs = {

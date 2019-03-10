@@ -7,7 +7,7 @@ local mods = SL[pn].ActiveModifiers
 
 local PlayerState = GAMESTATE:GetPlayerState(player)
 local streams, current_measure, previous_measure, MeasureCounterBMT
-local current_count, stream_index, current_stream_length
+local current_count, stream_index, current_stream_length, defaultMText, subtractMText
 
 -- We'll want to reset each of these values for each new song in the case of CourseMode
 local function InitializeMeasureCounter()
@@ -37,11 +37,21 @@ local function Update(self, delta)
 		if streams.Measures[stream_index]
 		and current_measure >= streams.Measures[stream_index].streamStart
 		and current_measure <= streams.Measures[stream_index].streamEnd then
-
 			current_stream_length = streams.Measures[stream_index].streamEnd - streams.Measures[stream_index].streamStart
 			current_count = math.floor(current_measure - streams.Measures[stream_index].streamStart) + 1
 
-			text = tostring(current_count .. "/" .. current_stream_length)
+			-- checks MeasureCounterStyle and set next measuretext
+			if mods.MeasureCounterStyle == "Traditional" then
+				stream_left = tostring(current_count .. "/" .. current_stream_length)
+			elseif mods.MeasureCounterStyle == "Subtraction" then
+				stream_left = current_stream_length - current_count + 1
+			elseif mods.MeasureCounterStyle == "Both" then
+				subtractMText = tostring(current_stream_length - current_count + 1)
+				defaultMText = tostring("/" .. current_stream_length)
+				stream_left = subtractMText .. defaultMText
+			end
+
+			text = tostring(stream_left)
 			MeasureCounterBMT:settext( text )
 
 			if current_count > current_stream_length then
@@ -74,16 +84,27 @@ if mods.MeasureCounter and mods.MeasureCounter ~= "None" then
 		Font="_wendy small",
 		InitCommand=function(self)
 			MeasureCounterBMT = self
-
-			self:zoom(0.35):shadowlength(1):horizalign(center)
-
-			if mods.MeasureCounterPosition == "Center" then
-				self:xy( GetNotefieldX(player), _screen.cy )
+			local width = GAMESTATE:GetCurrentStyle(player):GetWidth(player)
+			local NumColumns = GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()
+			
+			-- Set the size of the measure counter according to the size mod
+			if mods.MeasureCounterSize == "Big" then
+				self:zoom(0.5):shadowlength(1):horizalign(center)
+			elseif mods.MeasureCounterSize == "Humongous" then
+				self:zoom(0.75):shadowlength(1):horizalign(center)
 			else
-				local width = GAMESTATE:GetCurrentStyle(player):GetWidth(player)
-				local NumColumns = GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()
+				self:zoom(0.35):shadowlength(1):horizalign(center)
+			end
 
-				self:xy( GetNotefieldX(player) - (width/NumColumns), _screen.cy )
+			-- Set the position for the measurecounter according to the selected X and Y axis mods
+			if mods.MeasureCounterPositionX == "Center" and mods.MeasureCounterPositionY == "Below" then
+				self:xy( GetNotefieldX(player), _screen.cy )
+			elseif mods.MeasureCounterPositionX == "Center" and mods.MeasureCounterPositionY == "Above" then
+				self:xy( GetNotefieldX(player), _screen.cy - _screen.cy/4 )
+			elseif mods.MeasureCounterPositionX == "Left" and mods.MeasureCounterPositionY == "Below" then
+				self:xy( GetNotefieldX(player) - (width/NumColumns), _screen.cy)
+			else
+				self:xy( GetNotefieldX(player) - (width/NumColumns), _screen.cy - _screen.cy/4 )
 			end
 		end
 	}
