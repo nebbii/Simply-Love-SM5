@@ -25,7 +25,7 @@ return Def.BitmapText{
 			end
 		end
 
-		if SL[ToEnumShortString(player)].ActiveModifiers.DensityGraph ~= "Disabled" then
+		if SL[ToEnumShortString(player)].ActiveModifiers.DensityGraph ~= "Disabled" and SL[ToEnumShortString(player)].ActiveModifiers.LifeMeterType ~= "Standard" then
 			self:xy(_screen.cx + _screen.w/2.625, _screen.cy/10)
 			self:zoom(0.4)
 		end
