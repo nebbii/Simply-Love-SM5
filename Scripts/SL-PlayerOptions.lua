@@ -327,8 +327,8 @@ local Overrides = {
 		Values = function() return { "On", "Decents Only", "Off" } end,
 		OneChoiceForAllPlayers = true,
 		LoadSelections = function(self, list, pn)
-			local choice = SL.Global.ActiveModifiers.DecentsWayOffs or "Decents Only"
-			local i = FindInTable(choice, self.Choices) or 2
+			local choice = SL.Global.ActiveModifiers.DecentsWayOffs or "On"
+			local i = FindInTable(choice, self.Choices) or 1
 			list[i] = true
 			return list
 		end,

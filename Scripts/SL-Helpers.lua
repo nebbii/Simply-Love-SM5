@@ -133,7 +133,7 @@ function SetGameModePreferences()
 
 	-- Otherwise, we want Decents and WayOffs enabled by default.
 	else
- 		SL.Global.ActiveModifiers.DecentsWayOffs = "Decents Only"
+ 		SL.Global.ActiveModifiers.DecentsWayOffs = "On"
 	end
 
 	-- Now that we've set the SL table for DecentsWayOffs appropriately,
