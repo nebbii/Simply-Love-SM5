@@ -7,7 +7,7 @@ local mods = SL[pn].ActiveModifiers
 
 local PlayerState = GAMESTATE:GetPlayerState(player)
 local streams, current_measure, previous_measure, MeasureCounterBMT
-local current_count, stream_index, current_stream_length
+local current_count, stream_index, current_stream_length, defaultMText, subtractMText
 
 -- We'll want to reset each of these values for each new song in the case of CourseMode
 local function InitializeMeasureCounter()
@@ -37,8 +37,6 @@ local function Update(self, delta)
 		if streams.Measures[stream_index]
 		and current_measure >= streams.Measures[stream_index].streamStart
 		and current_measure <= streams.Measures[stream_index].streamEnd then
-			local defaultMText
-			local subtractMText
 			current_stream_length = streams.Measures[stream_index].streamEnd - streams.Measures[stream_index].streamStart
 			current_count = math.floor(current_measure - streams.Measures[stream_index].streamStart) + 1
 
