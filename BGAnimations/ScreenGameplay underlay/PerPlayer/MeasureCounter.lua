@@ -4,9 +4,16 @@ if SL.Global.GameMode == "Casual" then return end
 local player = ...
 local pn = ToEnumShortString(player)
 local mods = SL[pn].ActiveModifiers
-
+local song = GAMESTATE:GetCurrentSong()
+local song_dir = GAMESTATE:GetCurrentSong():GetSongDir()
+local steps = GAMESTATE:GetCurrentSteps(player)
+local steps_type = ToEnumShortString( steps:GetStepsType() ):gsub("_", "-"):lower()
+local difficulty = ToEnumShortString( steps:GetDifficulty() )
+local bdown = GetStreamBreakdown(song_dir, steps_type, difficulty)
+local currentStreamNumber = 1
 local PlayerState = GAMESTATE:GetPlayerState(player)
-local streams, current_measure, previous_measure, MeasureCounterBMT
+local streams, current_measure, previous_measure, MeasureCounterBMT, sideBdown
+local text1, text2, text3, text4, text5
 local current_count, stream_index, current_stream_length, defaultMText, subtractMText
 
 -- We'll want to reset each of these values for each new song in the case of CourseMode
@@ -16,6 +23,31 @@ local function InitializeMeasureCounter()
 	stream_index = 1
 	current_stream_length = 0
 	previous_measure = nil
+
+	-- We need to split up the breakdown into individual streams
+	seperateStreams = Splitter(bdown, sep)
+	local sepstring = tostring(seperateStreams)
+	SCREENMAN:SystemMessage(sepstring)
+
+	-- TO-DO needs to be rewritten in a more robust/elegant way
+	if seperateStreams[currentStreamNumber] ~= nil  then
+	text1 = seperateStreams[currentStreamNumber]
+	text2 = seperateStreams[currentStreamNumber+1]
+	text3 = seperateStreams[currentStreamNumber+2]
+	text4 = seperateStreams[currentStreamNumber+3]
+	text5 = seperateStreams[currentStreamNumber+4]
+	end
+end
+
+function Splitter(inputstr, sep)
+	if sep == nil then
+			sep = "/"
+	end
+	local t={}
+	for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
+			table.insert(t, str)
+	end
+	return t
 end
 
 local function Update(self, delta)
@@ -51,6 +83,7 @@ local function Update(self, delta)
 				stream_left = subtractMText .. defaultMText
 			end
 
+			sideBdown = tostring(current_count.."/"..text1.. '\n' ..text2.. '\n'..text3.. '\n'..text4.. '\n'..text5)
 			text = tostring(stream_left)
 			MeasureCounterBMT:settext( text )
 
