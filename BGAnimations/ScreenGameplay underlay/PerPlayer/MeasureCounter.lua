@@ -91,7 +91,7 @@ local function Update(self, delta)
 						mTextArray[currentStreamNumber+i] = " "
 					end
 				end
-			sideBdown = tostring(current_count.."/"..mTextArray[currentStreamNumber].. '\n' ..mTextArray[currentStreamNumber+1]..'\n'..mTextArray[currentStreamNumber+2].. '\n'..mTextArray[currentStreamNumber+3].. '\n'..mTextArray[currentStreamNumber+4])
+			sideBdown = tostring(">"..mTextArray[currentStreamNumber].."  ".. '\n' ..mTextArray[currentStreamNumber+1]..'\n'..mTextArray[currentStreamNumber+2].. '\n'..mTextArray[currentStreamNumber+3].. '\n'..mTextArray[currentStreamNumber+4])
 			text = tostring(stream_left)
 			MeasureCounterBMT:settext( text )
 			sideBdownBMT:settext(sideBdown)
