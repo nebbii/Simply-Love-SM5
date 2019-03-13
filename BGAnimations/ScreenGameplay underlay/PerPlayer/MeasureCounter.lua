@@ -172,7 +172,7 @@ if mods.MeasureCounter and mods.MeasureCounter ~= "None" then
 			end
 
 			-- Set the position for the measurecounter according to the selected X and Y axis mods
-				self:xy( GetNotefieldX(player) - (width/1.5), _screen.cy + _screen.cy/4)
+				self:xy( GetNotefieldX(player) - (width/1.9), _screen.cy + _screen.cy/4)
 
 		end
 	}
