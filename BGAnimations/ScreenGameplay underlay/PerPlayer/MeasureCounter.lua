@@ -12,9 +12,9 @@ local difficulty = ToEnumShortString( steps:GetDifficulty() )
 local bdown = GetStreamBreakdown(song_dir, steps_type, difficulty)
 local currentStreamNumber = 1
 local PlayerState = GAMESTATE:GetPlayerState(player)
-local streams, current_measure, previous_measure, MeasureCounterBMT, sideBdown
+local streams, current_measure, previous_measure, MeasureCounterBMT, sideBdown, sideBdownBMT, mTextArray
+local current_count, stream_index, current_stream_length, defaultMText, subtractMText, sideText, text
 local text1, text2, text3, text4, text5
-local current_count, stream_index, current_stream_length, defaultMText, subtractMText
 
 -- We'll want to reset each of these values for each new song in the case of CourseMode
 local function InitializeMeasureCounter()
@@ -23,6 +23,7 @@ local function InitializeMeasureCounter()
 	stream_index = 1
 	current_stream_length = 0
 	previous_measure = nil
+	mTextArray = {}
 
 	-- We need to split up the breakdown into individual streams
 	seperateStreams = Splitter(bdown, sep)
@@ -30,13 +31,13 @@ local function InitializeMeasureCounter()
 	SCREENMAN:SystemMessage(sepstring)
 
 	-- TO-DO needs to be rewritten in a more robust/elegant way
-	if seperateStreams[currentStreamNumber] ~= nil  then
-	text1 = seperateStreams[currentStreamNumber]
-	text2 = seperateStreams[currentStreamNumber+1]
-	text3 = seperateStreams[currentStreamNumber+2]
-	text4 = seperateStreams[currentStreamNumber+3]
-	text5 = seperateStreams[currentStreamNumber+4]
-	end
+		for i=0,5 do	
+			if (seperateStreams[currentStreamNumber+i]) ~= nil then
+				mTextArray[currentStreamNumber+i] = seperateStreams[currentStreamNumber+i]
+			else
+				mTextArray[currentStreamNumber+i] = " "
+			end
+		end
 end
 
 function Splitter(inputstr, sep)
@@ -83,15 +84,27 @@ local function Update(self, delta)
 				stream_left = subtractMText .. defaultMText
 			end
 
-			sideBdown = tostring(current_count.."/"..text1.. '\n' ..text2.. '\n'..text3.. '\n'..text4.. '\n'..text5)
+				for i=0,5 do	
+					if (seperateStreams[currentStreamNumber+i]) ~= nil then
+						mTextArray[currentStreamNumber+i] = seperateStreams[currentStreamNumber+i]
+					else
+						mTextArray[currentStreamNumber+i] = " "
+					end
+				end
+			sideBdown = tostring(current_count.."/"..mTextArray[currentStreamNumber].. '\n' ..mTextArray[currentStreamNumber+1]..'\n'..mTextArray[currentStreamNumber+2].. '\n'..mTextArray[currentStreamNumber+3].. '\n'..mTextArray[currentStreamNumber+4])
 			text = tostring(stream_left)
 			MeasureCounterBMT:settext( text )
+			sideBdownBMT:settext(sideBdown)
 
 			if current_count > current_stream_length then
 				stream_index = stream_index + 1
+				sideBdownBMT:settext(mTextArray[currentStreamNumber+1].. '\n' ..mTextArray[currentStreamNumber+2]..'\n'..mTextArray[currentStreamNumber+3].. '\n'..mTextArray[currentStreamNumber+4].. '\n'..mTextArray[currentStreamNumber+5])
+				currentStreamNumber = currentStreamNumber + 1
 				MeasureCounterBMT:settext( "" )
 			end
+
 		else
+			sideBdownBMT:settext(mTextArray[currentStreamNumber].. '\n' ..mTextArray[currentStreamNumber+1]..'\n'..mTextArray[currentStreamNumber+2].. '\n'..mTextArray[currentStreamNumber+3].. '\n'..mTextArray[currentStreamNumber+4])
 			MeasureCounterBMT:settext( "" )
 		end
 	end
@@ -142,6 +155,27 @@ if mods.MeasureCounter and mods.MeasureCounter ~= "None" then
 		end
 	}
 
+	af[#af+2] = Def.BitmapText{
+		Font="_wendy small",
+		InitCommand=function(self)
+			sideBdownBMT = self
+			local width = GAMESTATE:GetCurrentStyle(player):GetWidth(player)
+			local NumColumns = GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()
+			
+			-- Set the size of the measure counter according to the size mod
+			if mods.MeasureCounterSize == "Big" then
+				self:zoom(0.5):shadowlength(1):horizalign(center)
+			elseif mods.MeasureCounterSize == "Humongous" then
+				self:zoom(0.75):shadowlength(1):horizalign(center)
+			else
+				self:zoom(0.35):shadowlength(1):horizalign(center)
+			end
+
+			-- Set the position for the measurecounter according to the selected X and Y axis mods
+				self:xy( GetNotefieldX(player) - (width/1.5), _screen.cy + _screen.cy/4)
+
+		end
+	}
 	return af
 
 else
