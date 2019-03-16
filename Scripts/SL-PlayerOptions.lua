@@ -323,6 +323,10 @@ local Overrides = {
 		Choices = function() return { "Traditional", "Big", "Humongous" } end,
 	},
 	-------------------------------------------------------------------------
+	BreakDownDisplay = {
+		Choices = function() return { "On", "Off" } end,
+	},
+	-------------------------------------------------------------------------
 	DecentsWayOffs = {
 		Values = function() return { "On", "Decents Only", "Off" } end,
 		OneChoiceForAllPlayers = true,
