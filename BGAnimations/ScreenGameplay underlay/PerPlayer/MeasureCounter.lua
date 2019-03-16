@@ -14,7 +14,6 @@ local currentStreamNumber = 1
 local PlayerState = GAMESTATE:GetPlayerState(player)
 local streams, current_measure, previous_measure, MeasureCounterBMT, sideBdown, sideBdownBMT, mTextArray
 local current_count, stream_index, current_stream_length, defaultMText, subtractMText, sideText, text
-local text1, text2, text3, text4, text5
 local actorAmount = 1
 
 -- We'll want to reset each of these values for each new song in the case of CourseMode
@@ -128,8 +127,6 @@ local function Update(self, delta)
 
 	return
 end
-
-
 
 	local af = Def.ActorFrame{
 		InitCommand=function(self)
