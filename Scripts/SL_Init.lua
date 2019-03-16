@@ -22,6 +22,7 @@ local PlayerDefaults = {
 				MeasureCounterPositionY = "Below",
 				MeasureCounterStyle = "Traditional",
 				MeasureCounterSize = "Traditional",
+				BreakDownDisplay = "Off",
 				MeasureCounter = "None",
 				TargetStatus="Disabled",
 				TargetBar=11,

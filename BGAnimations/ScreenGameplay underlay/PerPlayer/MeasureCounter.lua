@@ -15,6 +15,7 @@ local PlayerState = GAMESTATE:GetPlayerState(player)
 local streams, current_measure, previous_measure, MeasureCounterBMT, sideBdown, sideBdownBMT, mTextArray
 local current_count, stream_index, current_stream_length, defaultMText, subtractMText, sideText, text
 local text1, text2, text3, text4, text5
+local actorAmount = 1
 
 -- We'll want to reset each of these values for each new song in the case of CourseMode
 local function InitializeMeasureCounter()
@@ -24,6 +25,7 @@ local function InitializeMeasureCounter()
 	current_stream_length = 0
 	previous_measure = nil
 	mTextArray = {}
+	actorAmount = 1
 
 	-- We need to split up the breakdown into individual streams
 	seperateStreams = Splitter(bdown, sep)
@@ -50,6 +52,8 @@ function Splitter(inputstr, sep)
 	end
 	return t
 end
+
+
 
 local function Update(self, delta)
 
@@ -82,8 +86,10 @@ local function Update(self, delta)
 				subtractMText = tostring(current_stream_length - current_count + 1)
 				defaultMText = tostring("/" .. current_stream_length)
 				stream_left = subtractMText .. defaultMText
+			else
+				stream_left = ""
 			end
-
+			if mods.BreakDownDisplay and mods.BreakDownDisplay ~= "Off" then
 				for i=0,5 do	
 					if (seperateStreams[currentStreamNumber+i]) ~= nil then
 						mTextArray[currentStreamNumber+i] = seperateStreams[currentStreamNumber+i]
@@ -91,28 +97,39 @@ local function Update(self, delta)
 						mTextArray[currentStreamNumber+i] = " "
 					end
 				end
-			sideBdown = tostring(">"..mTextArray[currentStreamNumber].."  ".. '\n' ..mTextArray[currentStreamNumber+1]..'\n'..mTextArray[currentStreamNumber+2].. '\n'..mTextArray[currentStreamNumber+3].. '\n'..mTextArray[currentStreamNumber+4])
+				sideBdown = tostring(">"..mTextArray[currentStreamNumber].."  ".. '\n' ..mTextArray[currentStreamNumber+1]..'\n'..mTextArray[currentStreamNumber+2].. '\n'..mTextArray[currentStreamNumber+3].. '\n'..mTextArray[currentStreamNumber+4])
+				sideBdownBMT:settext(sideBdown)
+			end
 			text = tostring(stream_left)
-			MeasureCounterBMT:settext( text )
-			sideBdownBMT:settext(sideBdown)
+			if mods.MeasureCounter and mods.MeasureCounter ~= "None" then
+				MeasureCounterBMT:settext( text )
+			end
 
 			if current_count > current_stream_length then
+				if mods.BreakDownDisplay and mods.BreakDownDisplay ~= "Off" then
+					sideBdownBMT:settext(mTextArray[currentStreamNumber+1].. '\n' ..mTextArray[currentStreamNumber+2]..'\n'..mTextArray[currentStreamNumber+3].. '\n'..mTextArray[currentStreamNumber+4].. '\n'..mTextArray[currentStreamNumber+5])
+				end
 				stream_index = stream_index + 1
-				sideBdownBMT:settext(mTextArray[currentStreamNumber+1].. '\n' ..mTextArray[currentStreamNumber+2]..'\n'..mTextArray[currentStreamNumber+3].. '\n'..mTextArray[currentStreamNumber+4].. '\n'..mTextArray[currentStreamNumber+5])
 				currentStreamNumber = currentStreamNumber + 1
-				MeasureCounterBMT:settext( "" )
+				if mods.MeasureCounter and mods.MeasureCounter ~= "None" then
+					MeasureCounterBMT:settext( "" )
+				end
 			end
 
 		else
-			sideBdownBMT:settext(mTextArray[currentStreamNumber].. '\n' ..mTextArray[currentStreamNumber+1]..'\n'..mTextArray[currentStreamNumber+2].. '\n'..mTextArray[currentStreamNumber+3].. '\n'..mTextArray[currentStreamNumber+4])
-			MeasureCounterBMT:settext( "" )
+			if mods.BreakDownDisplay and mods.BreakDownDisplay ~= "Off" then
+				sideBdownBMT:settext(mTextArray[currentStreamNumber].. '\n' ..mTextArray[currentStreamNumber+1]..'\n'..mTextArray[currentStreamNumber+2].. '\n'..mTextArray[currentStreamNumber+3].. '\n'..mTextArray[currentStreamNumber+4])
+			end
+			if mods.MeasureCounter and mods.MeasureCounter ~= "None" then
+				MeasureCounterBMT:settext( "" )
+			end
 		end
 	end
 
 	return
 end
 
-if mods.MeasureCounter and mods.MeasureCounter ~= "None" then
+
 
 	local af = Def.ActorFrame{
 		InitCommand=function(self)
@@ -126,7 +143,10 @@ if mods.MeasureCounter and mods.MeasureCounter ~= "None" then
 		end
 	}
 
-	af[#af+1] = Def.BitmapText{
+	if mods.MeasureCounter and mods.MeasureCounter ~= "None" then
+
+	actorAmount = actorAmount + 1
+	af[#af+actorAmount] = Def.BitmapText{
 		Font="_wendy small",
 		InitCommand=function(self)
 			MeasureCounterBMT = self
@@ -154,8 +174,14 @@ if mods.MeasureCounter and mods.MeasureCounter ~= "None" then
 			end
 		end
 	}
+	if mods.BreakDownDisplay == "Off" then
+		return af
+	end
+end
 
-	af[#af+2] = Def.BitmapText{
+if mods.BreakDownDisplay and mods.BreakDownDisplay ~= "Off" then
+	actorAmount = actorAmount + 1
+	af[#af+actorAmount] = Def.BitmapText{
 		Font="_wendy small",
 		InitCommand=function(self)
 			sideBdownBMT = self
