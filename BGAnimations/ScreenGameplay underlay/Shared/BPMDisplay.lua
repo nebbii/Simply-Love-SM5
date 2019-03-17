@@ -21,7 +21,7 @@ local UpdateSingleBPM = function(af)
 
 	-- MusicRate Display
 	MusicRate = string.format("%.2f", MusicRate )
-	MusicRateDisplay:settext( MusicRate ~= "1.00" and MusicRate.."x rate" or "" )
+	MusicRateDisplay:settext( MusicRate ~= "1.00" and "("..bpmUnrated.." x "..MusicRate.." rate)" or "" )
 end
 
 -- the update function when two BPM Displays are needed for divergent TimingData (split BPMs)

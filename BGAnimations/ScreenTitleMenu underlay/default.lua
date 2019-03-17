@@ -1,8 +1,15 @@
 local TextColor = ThemePrefs.Get("RainbowMode") and Color.Black or Color.White
+local image = ThemePrefs.Get("VisualTheme")
+local SongStats
+if image == "Borderline" then
+	SongStats = SONGMAN:GetNumSongs() .. " 17's in "
+else
+	SongStats = SONGMAN:GetNumSongs() .. " songs in "
+end
 
-local SongStats = SONGMAN:GetNumSongs() .. " songs in "
+
 SongStats = SongStats .. SONGMAN:GetNumSongGroups() .. " groups, "
-SongStats = SongStats .. #SONGMAN:GetAllCourses(PREFSMAN:GetPreference("AutogenGroupCourses")) .. " courses"
+SongStats = SongStats .. SONGMAN:GetNumCourses() .. " courses"
 
 -- - - - - - - - - - - - - - - - - - - - -
 
@@ -14,6 +21,13 @@ end
 -- - - - - - - - - - - - - - - - - - - - -
 local sm_version = ""
 local sl_version = GetThemeVersion()
+
+local banner
+if image == "Borderline" then
+	banner = "borderline (doubleres)"
+else
+	banner = game
+end
 
 if ProductVersion():find("git") then
 	local date = VersionDate()
@@ -28,7 +42,6 @@ else
 	sm_version = ProductID() .. sm_version
 end
 -- - - - - - - - - - - - - - - - - - - - -
-local image = ThemePrefs.Get("VisualTheme")
 
 if image == "Spooky" then  --SSHHHH dont tell anyone ;)
 	image = (math.random(1,100) > 11 and "Spooky" or "Spoopy")
@@ -58,8 +71,7 @@ local af = Def.ActorFrame{
 			InitCommand=function(self) self:diffuse(TextColor) end,
 		}
 	},
-
-	LoadActor(THEME:GetPathG("", "_logos/" .. game))..{
+		LoadActor(THEME:GetPathG("", "_logos/" .. banner))..{
 		InitCommand=function(self)
 			self:y(-16):zoom( game=="pump" and 0.2 or 0.205 )
 		end

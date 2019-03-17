@@ -19,12 +19,18 @@ local t = Def.ActorFrame{
 			local p = ToEnumShortString(player)
 			SL[p].Stages.Stats[SL.Global.Stages.PlayedThisGame + 1].duration = duration_played
 		end
+	end,
+	CodeMessageCommand=function(self, params)
+		if params.Name == "Restart" then
+			SCREENMAN:SetNewScreen("ScreenGameplay")
+		end
 	end
 }
 
 for player in ivalues( GAMESTATE:GetHumanPlayers() ) do
 	SL[ToEnumShortString(player)].Stages.Stats[SL.Global.Stages.PlayedThisGame + 1] = {}
-	
+
+	t[#t+1] = LoadActor("./LaneCover.lua", player)
 	t[#t+1] = LoadActor("./PerColumnJudgmentTracking.lua", player)
 	t[#t+1] = LoadActor("./ReceptorArrowsPosition.lua", player)
 	t[#t+1] = LoadActor("./JudgmentOffsetTracking.lua", player)

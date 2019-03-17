@@ -30,6 +30,7 @@ for player in ivalues(Players) do
 	t[#t+1] = LoadActor("./PerPlayer/MeasureCounter.lua", player)
 	t[#t+1] = LoadActor("./PerPlayer/TargetScore/default.lua", player)
 	t[#t+1] = LoadActor("./PerPlayer/SubtractiveScoring.lua", player)
+	t[#t+1] = LoadActor("./PerPlayer/DensityGraph.lua", player)
 end
 
 -- gets overlapped by StepStatistics otherwise...?
@@ -38,5 +39,7 @@ t[#t+1] = LoadActor("./Shared/BPMDisplay.lua")
 if GAMESTATE:IsPlayerEnabled(PLAYER_1) and GAMESTATE:IsPlayerEnabled(PLAYER_2) then
 	t[#t+1] = LoadActor("./Shared/WhoIsCurrentlyWinning.lua")
 end
+
+t[#t+1] = LoadActor("./Shared/SyncStartScores.lua")
 
 return t

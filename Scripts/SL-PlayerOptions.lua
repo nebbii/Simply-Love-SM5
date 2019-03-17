@@ -161,7 +161,7 @@ local Overrides = {
 		Choices = function()
 			local first	= -100
 			local last 	= 150
-			local step 	= 5
+			local step 	= 1
 
 			return stringify( range(first, last, step), "%g%%")
 		end,
@@ -308,12 +308,28 @@ local Overrides = {
 		end
 	},
 	-------------------------------------------------------------------------
-	MeasureCounterPosition = {
+	MeasureCounterPositionX = {
 		Values = function() return { "Left", "Center" } end,
+	},
+	-------------------------------------------------------------------------
+	MeasureCounterPositionY = {
+		Values = function() return { "Below", "Above" } end,
 	},
 	-------------------------------------------------------------------------
 	MeasureCounter = {
 		Values = function() return { "None", "8th", "12th", "16th", "24th", "32nd" } end,
+	},
+	-------------------------------------------------------------------------
+	MeasureCounterStyle = {
+		Choices = function() return { "Traditional", "Subtraction", "Both" } end,
+	},
+	-------------------------------------------------------------------------
+	MeasureCounterSize = {
+		Choices = function() return { "Traditional", "Big", "Humongous" } end,
+	},
+	-------------------------------------------------------------------------
+	BreakDownDisplay = {
+		Choices = function() return { "On", "Off" } end,
 	},
 	-------------------------------------------------------------------------
 	DecentsWayOffs = {
@@ -376,6 +392,36 @@ local Overrides = {
 		Values = function() return { "Standard", "Surround", "Vertical" } end,
 	},
 	-------------------------------------------------------------------------
+	DensityGraph = {
+		Choices = function() return { "Disabled", "Enabled" } end,
+		LoadSelections = function(self, list, pn)
+			local choice = 	SL[ToEnumShortString(pn)].ActiveModifiers.DensityGraph or "Disabled"
+			local i = FindInTable(choice, self.Choices) or 1
+			list[i] = true
+			return list
+		end,
+		SaveSelections = function(self, list, pn)
+			local mods = SL[ToEnumShortString(pn)].ActiveModifiers
+
+			for i=1,#self.Choices do
+				if list[i] then
+					mods.DensityGraph = self.Choices[i]
+				end
+			end
+		end
+	},
+	-------------------------------------------------------------------------
+	LaneCover = {
+		LayoutType = "ShowOneInRow",
+		Choices = function()
+			local first	= 0
+			local last 	= 100
+			local step 	= 1
+
+			return stringify( range(first, last, step), "%g%%")
+		end,
+	},
+	-------------------------------------------------------------------------
 	ScreenAfterPlayerOptions = {
 		Values = function()
 			if SL.Global.GameMode == "Casual" then
@@ -432,7 +478,7 @@ local Overrides = {
 				if list[2] then SL.Global.ScreenAfter.PlayerOptions2 = "ScreenPlayerOptions" end
 			end
 		end
-	}
+	},
 	-------------------------------------------------------------------------
 }
 
